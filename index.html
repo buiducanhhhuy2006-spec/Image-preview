@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Xem trước hình ảnh khi di chuột</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #f7f7f7;
+    color: #222;
+  }
+  h1 {
+    font-size: 1.4em;
+    margin-bottom: 4px;
+  }
+  p.instructions {
+    color: #555;
+    margin-top: 0;
+  }
+
+  /* Vùng xem trước */
+  #preview {
+    width: 100%;
+    height: 260px;
+    border: 2px dashed #999;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    font-size: 1.1em;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #ccc;
+  }
+
+  /* Dãy ảnh thu nhỏ */
+  .thumbs {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .thumb {
+    width: 140px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .thumb:hover {
+    border-color: #3a7afe;
+    transform: scale(1.03);
+  }
+</style>
+</head>
+<body>
+
+  <h1>Thư viện ảnh - Xem trước khi di chuột</h1>
+  <p class="instructions">Di chuột qua một trong các ảnh bên dưới để xem nó hiển thị lớn ở khung phía trên.</p>
+
+  <!-- Khung xem trước: id="preview" là phần tử mà hàm update()/undo() sẽ thay đổi -->
+  <div id="preview">Di chuột qua một hình ảnh bên dưới để hiển thị ở đây.</div>
+
+  <div class="thumbs">
+    <img class="thumb"
+         src="https://picsum.photos/id/1015/300/200"
+         alt="Núi và sông"
+         onmouseover="update(this)"
+         onmouseout="undo()">
+
+    <img class="thumb"
+         src="https://picsum.photos/id/1025/300/200"
+         alt="Chó con"
+         onmouseover="update(this)"
+         onmouseout="undo()">
+
+    <img class="thumb"
+         src="https://picsum.photos/id/1039/300/200"
+         alt="Hồ nước và núi tuyết"
+         onmouseover="update(this)"
+         onmouseout="undo()">
+
+    <img class="thumb"
+         src="https://picsum.photos/id/1043/300/200"
+         alt="Ruộng bậc thang"
+         onmouseover="update(this)"
+         onmouseout="undo()">
+  </div>
+
+<script>
+  // Văn bản gốc, dùng lại trong hàm undo()
+  var originalText = "Di chuột qua một hình ảnh bên dưới để hiển thị ở đây.";
+
+  // Được gọi khi chuột di vào (mouseover) một ảnh thu nhỏ.
+  // previewPic là chính phần tử <img> đang được trỏ tới (truyền vào bằng "this").
+  function update(previewPic) {
+    // Bước 3.1: kiểm tra sự kiện có kích hoạt không
+    console.log("update() được gọi");
+
+    // Bước 3.2: kiểm tra thông tin của previewPic
+    console.log("alt:", previewPic.alt);
+    console.log("src:", previewPic.src);
+
+    // Bước 3.3: đổi văn bản trong khung xem trước thành alt của ảnh
+    var previewDiv = document.getElementById("preview");
+    previewDiv.textContent = previewPic.alt;
+
+    // Bước 3.5: đổi hình nền của khung xem trước thành ảnh đang được trỏ tới
+    previewDiv.style.backgroundImage = "url('" + previewPic.src + "')";
+  }
+
+  // Được gọi khi chuột rời khỏi (mouseout) ảnh thu nhỏ.
+  function undo() {
+    var previewDiv = document.getElementById("preview");
+
+    // Bước 4.1: đưa hình nền về rỗng
+    previewDiv.style.backgroundImage = "url('')";
+
+    // Bước 4.2: đưa văn bản về lại nội dung ban đầu
+    previewDiv.textContent = originalText;
+  }
+</script>
+
+</body>
+</html>
